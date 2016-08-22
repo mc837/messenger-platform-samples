@@ -235,7 +235,7 @@ function sendToLuis(recipientId, messageText){
 
       var intent = findHighestScoringEntity(stuff.intents).intent;
       var entity = findHighestScoringEntity(stuff.entities).entity;
-
+console.log(intent + '_' + entity);
       return intent + '_' + entity;
     });
 };
