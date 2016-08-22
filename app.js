@@ -253,6 +253,7 @@ function findHighestScoringEntity(arr) {
 }
 
 function receivedMessage(event) {
+  console.log("recieved");
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -273,6 +274,19 @@ function receivedMessage(event) {
   var quickReply = message.quick_reply;
 
   var reply = sendToLuis(senderID, messageText);
+
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          text: reply,
+        }
+      }
+    }
   sendTextMessage(recipientID, reply);
 
   // if (isEcho) {
