@@ -279,7 +279,7 @@ function receivedMessage(event) {
         sendButtonMessage(senderID);
         break;
 
-      case 'meerkat':
+      case 'where is my meerkat':
         sendGenericMessage(senderID);
         break;
 
