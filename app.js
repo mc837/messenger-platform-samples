@@ -9,20 +9,21 @@
 
 /* jshint node: true, devel: true */
 'use strict';
-
 const
   bodyParser = require('body-parser'),
   config = require('config'),
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),
-  request = require('request');
+  request = require('request'),
+  catme = require('cat-me');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
+
 
 /*
  * Be sure to setup your config values before running this code. You can
@@ -253,16 +254,9 @@ function receivedMessage(event) {
 
  //var reply = "a really shitty reply";
     sendToLuis(senderID, messageText, function(reply) {
-      var messageData = {
-        recipient: {
-          id: recipientID
-        },
-        message: {
-          text: reply,
-          metadata: "DEVELOPER_DEFINED_METADATA"
-        }
-      };
-
+      if(reply == "find_meerkat"){
+        reply = catme();
+      }
       sendTextMessage(senderID, reply);
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
