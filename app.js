@@ -238,7 +238,7 @@ function sendToLuis(recipientId, messageText, callback){
 
       callback(intent + '_' + entity);
     });
-};
+}
 
 
 function findHighestScoringEntity(arr) {
@@ -272,97 +272,97 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
-console.log('about to send ' + messageText + ' to LUIS');
-  sendToLuis(senderID, messageText, function(reply) {
-    var messageData = {
-      recipient: {
-        id: recipientID
-      },
-      message: {
-        text: reply,
-        metadata: "DEVELOPER_DEFINED_METADATA"
-      }
-    };
+// console.log('about to send ' + messageText + ' to LUIS');
+//   sendToLuis(senderID, messageText, function(reply) {
+//     var messageData = {
+//       recipient: {
+//         id: recipientID
+//       },
+//       message: {
+//         text: reply,
+//         metadata: "DEVELOPER_DEFINED_METADATA"
+//       }
+//     };
+//
+//     sendTextMessage(recipientID, reply);
+//   });
 
-    sendTextMessage(recipientID, reply);
-  });
 
+  if (isEcho) {
+    // Just logging message echoes to console
+    console.log("Received echo for message %s and app %d with metadata %s",
+      messageId, appId, metadata);
+    return;
+  } else if (quickReply) {
+    var quickReplyPayload = quickReply.payload;
+    console.log("Quick reply for message %s with payload %s",
+      messageId, quickReplyPayload);
 
-  // if (isEcho) {
-  //   // Just logging message echoes to console
-  //   console.log("Received echo for message %s and app %d with metadata %s",
-  //     messageId, appId, metadata);
-  //   return;
-  // } else if (quickReply) {
-  //   var quickReplyPayload = quickReply.payload;
-  //   console.log("Quick reply for message %s with payload %s",
-  //     messageId, quickReplyPayload);
-  //
-  //   sendTextMessage(senderID, "Quick reply tapped");
-  //   return;
-  // }
+    sendTextMessage(senderID, "Quick reply tapped");
+    return;
+  }
 
-  // if (messageText) {
-  //
-  //   // If we receive a text message, check to see if it matches any special
-  //   // keywords and send back the corresponding example. Otherwise, just echo
-  //   // the text we received.
-  //   switch (messageText) {
-  //     case 'image':
-  //       sendImageMessage(senderID);
-  //       break;
-  //
-  //     case 'gif':
-  //       sendGifMessage(senderID);
-  //       break;
-  //
-  //     case 'audio':
-  //       sendAudioMessage(senderID);
-  //       break;
-  //
-  //     case 'video':
-  //       sendVideoMessage(senderID);
-  //       break;
-  //
-  //     case 'file':
-  //       sendFileMessage(senderID);
-  //       break;
-  //
-  //     case 'button':
-  //       sendButtonMessage(senderID);
-  //       break;
-  //
-  //     case 'where is my meerkat':
-  //       sendGenericMessage(senderID);
-  //       break;
-  //
-  //     case 'receipt':
-  //       sendReceiptMessage(senderID);
-  //       break;
-  //
-  //     case 'quick reply':
-  //       sendQuickReply(senderID);
-  //       break;
-  //
-  //     case 'read receipt':
-  //       sendReadReceipt(senderID);
-  //       break;
-  //
-  //     case 'typing on':
-  //       sendTypingOn(senderID);
-  //       break;
-  //
-  //     case 'typing off':
-  //       sendTypingOff(senderID);
-  //       break;
-  //
-  //     case 'account linking':
-  //       sendAccountLinking(senderID);
-  //       break;
-  //
-  //     default:
-  //       sendTextMessage(senderID, messageText);
-  //   }
+  if (messageText) {
+
+    // If we receive a text message, check to see if it matches any special
+    // keywords and send back the corresponding example. Otherwise, just echo
+    // the text we received.
+    switch (messageText) {
+      case 'image':
+        sendImageMessage(senderID);
+        break;
+
+      case 'gif':
+        sendGifMessage(senderID);
+        break;
+
+      case 'audio':
+        sendAudioMessage(senderID);
+        break;
+
+      case 'video':
+        sendVideoMessage(senderID);
+        break;
+
+      case 'file':
+        sendFileMessage(senderID);
+        break;
+
+      case 'button':
+        sendButtonMessage(senderID);
+        break;
+
+      case 'where is my meerkat':
+        sendGenericMessage(senderID);
+        break;
+
+      case 'receipt':
+        sendReceiptMessage(senderID);
+        break;
+
+      case 'quick reply':
+        sendQuickReply(senderID);
+        break;
+
+      case 'read receipt':
+        sendReadReceipt(senderID);
+        break;
+
+      case 'typing on':
+        sendTypingOn(senderID);
+        break;
+
+      case 'typing off':
+        sendTypingOff(senderID);
+        break;
+
+      case 'account linking':
+        sendAccountLinking(senderID);
+        break;
+
+      default:
+        sendTextMessage(senderID, messageText);
+    }
 
 }
 
