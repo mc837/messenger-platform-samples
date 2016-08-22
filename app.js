@@ -215,6 +215,39 @@ function receivedAuthentication(event) {
  * then we'll simply confirm that we've received the attachment.
  *
  */
+
+ function sendToLuis(recipientId, messageText){
+   var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
+
+   var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
+
+   request({
+     uri:questionUri,
+     method: 'POST',
+   },
+   function(error, response, body){
+     if(error !== undefined){
+       return messageText;
+     }
+
+     var intent = findHighestScoringEntity(body.intents);
+     var entity = findHighestScoringEntity(body.entities);
+
+     return $`{intent}_{entity}`;
+   });
+ }
+
+ function findHighestScoringEntity(arr) {
+   var entity = {score: -1};
+
+   arr.foreach(function(i) {
+     if (i.score > entity.score)
+      entity - i;
+   });
+
+   return entity;
+ }
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -235,81 +268,83 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
-  if (isEcho) {
-    // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s",
-      messageId, appId, metadata);
-    return;
-  } else if (quickReply) {
-    var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
+  sendToLuis(senderID, messageText);
 
-    sendTextMessage(senderID, "Quick reply tapped");
-    return;
-  }
+  // if (isEcho) {
+  //   // Just logging message echoes to console
+  //   console.log("Received echo for message %s and app %d with metadata %s",
+  //     messageId, appId, metadata);
+  //   return;
+  // } else if (quickReply) {
+  //   var quickReplyPayload = quickReply.payload;
+  //   console.log("Quick reply for message %s with payload %s",
+  //     messageId, quickReplyPayload);
+  //
+  //   sendTextMessage(senderID, "Quick reply tapped");
+  //   return;
+  // }
 
-  if (messageText) {
-
-    // If we receive a text message, check to see if it matches any special
-    // keywords and send back the corresponding example. Otherwise, just echo
-    // the text we received.
-    switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
-
-      case 'gif':
-        sendGifMessage(senderID);
-        break;
-
-      case 'audio':
-        sendAudioMessage(senderID);
-        break;
-
-      case 'video':
-        sendVideoMessage(senderID);
-        break;
-
-      case 'file':
-        sendFileMessage(senderID);
-        break;
-
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
-
-      case 'where is my meerkat':
-        sendGenericMessage(senderID);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(senderID);
-        break;
-
-      case 'quick reply':
-        sendQuickReply(senderID);
-        break;
-
-      case 'read receipt':
-        sendReadReceipt(senderID);
-        break;
-
-      case 'typing on':
-        sendTypingOn(senderID);
-        break;
-
-      case 'typing off':
-        sendTypingOff(senderID);
-        break;
-
-      case 'account linking':
-        sendAccountLinking(senderID);
-        break;
-
-      default:
-        sendTextMessage(senderID, messageText);
-    }
+  // if (messageText) {
+  //
+  //   // If we receive a text message, check to see if it matches any special
+  //   // keywords and send back the corresponding example. Otherwise, just echo
+  //   // the text we received.
+  //   switch (messageText) {
+  //     case 'image':
+  //       sendImageMessage(senderID);
+  //       break;
+  //
+  //     case 'gif':
+  //       sendGifMessage(senderID);
+  //       break;
+  //
+  //     case 'audio':
+  //       sendAudioMessage(senderID);
+  //       break;
+  //
+  //     case 'video':
+  //       sendVideoMessage(senderID);
+  //       break;
+  //
+  //     case 'file':
+  //       sendFileMessage(senderID);
+  //       break;
+  //
+  //     case 'button':
+  //       sendButtonMessage(senderID);
+  //       break;
+  //
+  //     case 'where is my meerkat':
+  //       sendGenericMessage(senderID);
+  //       break;
+  //
+  //     case 'receipt':
+  //       sendReceiptMessage(senderID);
+  //       break;
+  //
+  //     case 'quick reply':
+  //       sendQuickReply(senderID);
+  //       break;
+  //
+  //     case 'read receipt':
+  //       sendReadReceipt(senderID);
+  //       break;
+  //
+  //     case 'typing on':
+  //       sendTypingOn(senderID);
+  //       break;
+  //
+  //     case 'typing off':
+  //       sendTypingOff(senderID);
+  //       break;
+  //
+  //     case 'account linking':
+  //       sendAccountLinking(senderID);
+  //       break;
+  //
+  //     default:
+  //       sendTextMessage(senderID, messageText);
+  //   }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
