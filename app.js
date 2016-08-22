@@ -256,7 +256,7 @@ function receivedMessage(event) {
     sendToLuis(senderID, messageText, function(reply) {
       if(reply == "where_meerkat"){
         reply = "Postkat says: 'your meerkat is due this week'";
-      }else if( reply == "close_account"){
+      }else if( reply == "remove_account"){
         reply = "Sorry to here that. we will close your account for you right away";
       }
       else{
