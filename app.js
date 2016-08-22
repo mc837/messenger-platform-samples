@@ -223,15 +223,17 @@ function receivedAuthentication(event) {
 
    request({
      uri:questionUri,
-     method: 'POST',
+     method: 'GET',
    },
    function(error, response, body){
-     if(error !== undefined){
+     if(error !== null){
        return messageText;
      }
 
-     var intent = findHighestScoringEntity(body.intents);
-     var entity = findHighestScoringEntity(body.entities);
+var stuff = json.parse(body);
+
+     var intent = findHighestScoringEntity(stuff.intents);
+     var entity = findHighestScoringEntity(stuff.entities);
 
      return $`{intent}_{entity}`;
    });
@@ -245,7 +247,7 @@ function receivedAuthentication(event) {
       entity - i;
    });
 
-   return entity;
+   return intent +'_' + entity;
  }
 
 function receivedMessage(event) {
