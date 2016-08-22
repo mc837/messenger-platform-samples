@@ -216,39 +216,41 @@ function receivedAuthentication(event) {
  *
  */
 
- function sendToLuis(recipientId, messageText){
-   var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
 
-   var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
+function sendToLuis(recipientId, messageText){
+  var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
 
-   request({
-     uri:questionUri,
-     method: 'GET',
-   },
-   function(error, response, body){
-     if(error != null){
-       return messageText;
-     }
+  var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
 
-var stuff = json.parse(body);
+  request({
+      uri:questionUri,
+      method: 'GET',
+    },
+    function(error, response, body){
+      if(error != null){
+        return messageText;
+      }
 
-     var intent = findHighestScoringEntity(stuff.intents).intent;
-     var entity = findHighestScoringEntity(stuff.entities).entity;
+      var stuff = JSON.parse(body);
 
-        return intent +'_' + entity;
-   });
- }
+      var intent = findHighestScoringEntity(stuff.intents).intent;
+      var entity = findHighestScoringEntity(stuff.entities).entity;
 
- function findHighestScoringEntity(arr) {
-   var entity = {score: -1};
+      return intent + '_' + entity;
+    });
+};
 
-   arr.foreach(function(i) {
-     if (i.score > entity.score)
+
+function findHighestScoringEntity(arr) {
+  var entity = {score: -1};
+
+  arr.forEach(function(i) {
+    if (i.score > entity.score)
       entity = i;
-   });
+  });
 
-return entity;
- }
+  return entity;
+}
 
 function receivedMessage(event) {
   var senderID = event.sender.id;
