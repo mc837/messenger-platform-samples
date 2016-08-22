@@ -235,7 +235,7 @@ function sendToLuis(recipientId, messageText){
 
       var intent = findHighestScoringEntity(stuff.intents).intent;
       var entity = findHighestScoringEntity(stuff.entities).entity;
-console.log(intent + '_' + entity);
+
       return intent + '_' + entity;
     });
 };
@@ -274,6 +274,7 @@ function receivedMessage(event) {
 
   var reply = sendToLuis(senderID, messageText);
   sendTextMessage(recipientID, reply);
+
   // if (isEcho) {
   //   // Just logging message echoes to console
   //   console.log("Received echo for message %s and app %d with metadata %s",
@@ -349,9 +350,9 @@ function receivedMessage(event) {
   //     default:
   //       sendTextMessage(senderID, messageText);
   //   }
-  // } else if (messageAttachments) {
-  //   sendTextMessage(senderID, "Message with attachment received");
-  // }
+  } else if (messageAttachments) {
+    sendTextMessage(senderID, "Message with attachment received");
+  }
 }
 
 
