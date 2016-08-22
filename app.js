@@ -275,7 +275,7 @@ function receivedMessage(event) {
 }
 
  function sendToLuis(recipientId, messageText, callback){
-  var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
+  var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=4a141bb5-684d-4d31-817a-d8bec72995b1&subscription-key=a64e6e3a5ed84ede9e5b0de236f2080d';
 
   var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
 
