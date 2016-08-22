@@ -251,6 +251,7 @@ function receivedMessage(event) {
 
   if (messageText) {
 
+if(messageText == "wheres my meerkat"){
  //var reply = "a really shitty reply";
     sendToLuis(senderID, messageText, function(reply) {
       var messageData = {
@@ -268,6 +269,9 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     });
+  }else{
+    sendTextMessage(senderID, messageText);
+  }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
