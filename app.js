@@ -251,7 +251,7 @@ function receivedMessage(event) {
 
   if (messageText) {
 
-var reply = "a really shitty reply"
+// var reply = "a really shitty reply";
     // sendToLuis(senderID, messageText, function(reply) {
     //   var messageData = {
     //     recipient: {
@@ -263,7 +263,7 @@ var reply = "a really shitty reply"
     //     }
     //   };
 
-      sendTextMessage(recipientID, reply);
+      //sendTextMessage(recipientID, reply);
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
@@ -328,40 +328,40 @@ var reply = "a really shitty reply"
   }
 }
 
-function sendToLuis(recipientId, messageText, callback){
-  var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
-
-  var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
-
-  request({
-      uri:questionUri,
-      method: 'GET',
-    },
-    function(error, response, body){
-      if(error != null){
-        return messageText;
-      }
-
-      var stuff = JSON.parse(body);
-
-      var intent = findHighestScoringEntity(stuff.intents).intent;
-      var entity = findHighestScoringEntity(stuff.entities).type;
-
-      callback(intent + '_' + entity);
-    });
-};
-
-
-function findHighestScoringEntity(arr) {
-  var entity = {score: -1};
-
-  arr.forEach(function(i) {
-    if (i.score > entity.score)
-      entity = i;
-  });
-
-  return entity;
-}
+// function sendToLuis(recipientId, messageText, callback){
+//   var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
+//
+//   var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
+//
+//   request({
+//       uri:questionUri,
+//       method: 'GET',
+//     },
+//     function(error, response, body){
+//       if(error != null){
+//         return messageText;
+//       }
+//
+//       var stuff = JSON.parse(body);
+//
+//       var intent = findHighestScoringEntity(stuff.intents).intent;
+//       var entity = findHighestScoringEntity(stuff.entities).type;
+//
+//       callback(intent + '_' + entity);
+//     });
+// }
+//
+//
+// function findHighestScoringEntity(arr) {
+//   var entity = {score: -1};
+//
+//   arr.forEach(function(i) {
+//     if (i.score > entity.score)
+//       entity = i;
+//   });
+//
+//   return entity;
+// }
 
 /*
  * Delivery Confirmation Event
