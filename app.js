@@ -217,7 +217,7 @@ function receivedAuthentication(event) {
  */
 
 
-function sendToLuis(recipientId, messageText){
+function sendToLuis(recipientId, messageText, callback){
   var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
 
   var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
@@ -236,7 +236,7 @@ function sendToLuis(recipientId, messageText){
       var intent = findHighestScoringEntity(stuff.intents).intent;
       var entity = findHighestScoringEntity(stuff.entities).entity;
 
-      return intent + '_' + entity;
+      callback(intent + '_' + entity);
     });
 };
 
@@ -253,7 +253,6 @@ function findHighestScoringEntity(arr) {
 }
 
 function receivedMessage(event) {
-  console.log("recieved");
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -273,21 +272,20 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
-  var reply = sendToLuis(senderID, messageText);
-
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          text: reply,
-        }
+  sendToLuis(senderID, messageText, function(reply) {
+    var messageData = {
+      recipient: {
+        id: recipientID
+      },
+      message: {
+        text: reply,
+        metadata: "DEVELOPER_DEFINED_METADATA"
       }
-    }
-  sendTextMessage(recipientID, reply);
+    };
+
+    sendTextMessage(recipientID, reply)
+  });
+
 
   // if (isEcho) {
   //   // Just logging message echoes to console
@@ -364,9 +362,7 @@ function receivedMessage(event) {
   //     default:
   //       sendTextMessage(senderID, messageText);
   //   }
-  // } else if (messageAttachments) {
-  //   sendTextMessage(senderID, "Message with attachment received");
-  // }
+
 }
 
 
