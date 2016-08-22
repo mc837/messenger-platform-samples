@@ -272,6 +272,7 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
+console.log('about to send ' + messageText + ' to LUIS');
   sendToLuis(senderID, messageText, function(reply) {
     var messageData = {
       recipient: {
