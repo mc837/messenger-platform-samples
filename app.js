@@ -226,14 +226,14 @@ function receivedAuthentication(event) {
      method: 'GET',
    },
    function(error, response, body){
-     if(error !== null){
+     if(error != null){
        return messageText;
      }
 
 var stuff = json.parse(body);
 
-     var intent = findHighestScoringEntity(stuff.intents);
-     var entity = findHighestScoringEntity(stuff.entities);
+     var intent = findHighestScoringEntity(stuff.intents).intent;
+     var entity = findHighestScoringEntity(stuff.entities).entity;
 
         return intent +'_' + entity;
    });
