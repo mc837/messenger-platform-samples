@@ -284,7 +284,7 @@ console.log('about to send ' + messageText + ' to LUIS');
       }
     };
 
-    sendTextMessage(recipientID, reply)
+    sendTextMessage(recipientID, reply);
   });
 
 
