@@ -235,7 +235,7 @@ var stuff = json.parse(body);
      var intent = findHighestScoringEntity(stuff.intents);
      var entity = findHighestScoringEntity(stuff.entities);
 
-     return $`{intent}_{entity}`;
+        return intent +'_' + entity;
    });
  }
 
@@ -244,10 +244,10 @@ var stuff = json.parse(body);
 
    arr.foreach(function(i) {
      if (i.score > entity.score)
-      entity - i;
+      entity = i;
    });
 
-   return intent +'_' + entity;
+return entity;
  }
 
 function receivedMessage(event) {
