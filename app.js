@@ -350,9 +350,9 @@ function receivedMessage(event) {
   //     default:
   //       sendTextMessage(senderID, messageText);
   //   }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
-  }
+  // } else if (messageAttachments) {
+  //   sendTextMessage(senderID, "Message with attachment received");
+  // }
 }
 
 
