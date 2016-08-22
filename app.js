@@ -215,43 +215,6 @@ function receivedAuthentication(event) {
  * then we'll simply confirm that we've received the attachment.
  *
  */
-
-
-// function sendToLuis(recipientId, messageText, callback){
-//   var luisUri = 'https://api.projectoxford.ai/luis/v1/application?id=dbffebbd-5180-4e8a-8b87-cb5b4593e31e&subscription-key=8a51881501224a6588ef6f73a215cc51';
-//
-//   var questionUri = luisUri + '&q=' + encodeURIComponent(messageText);
-//
-//   request({
-//       uri:questionUri,
-//       method: 'GET',
-//     },
-//     function(error, response, body){
-//       if(error != null){
-//         return messageText;
-//       }
-//
-//       var stuff = JSON.parse(body);
-//
-//       var intent = findHighestScoringEntity(stuff.intents).intent;
-//       var entity = findHighestScoringEntity(stuff.entities).entity;
-//
-//       callback(intent + '_' + entity);
-//     });
-// }
-//
-//
-// function findHighestScoringEntity(arr) {
-//   var entity = {score: -1};
-//
-//   arr.forEach(function(i) {
-//     if (i.score > entity.score)
-//       entity = i;
-//   });
-//
-//   return entity;
-// }
-
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -271,22 +234,6 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
-
-// console.log('about to send ' + messageText + ' to LUIS');
-//   sendToLuis(senderID, messageText, function(reply) {
-//     var messageData = {
-//       recipient: {
-//         id: recipientID
-//       },
-//       message: {
-//         text: reply,
-//         metadata: "DEVELOPER_DEFINED_METADATA"
-//       }
-//     };
-//
-//     sendTextMessage(recipientID, reply);
-//   });
-
 
   if (isEcho) {
     // Just logging message echoes to console
@@ -332,7 +279,7 @@ function receivedMessage(event) {
         sendButtonMessage(senderID);
         break;
 
-      case 'where is my meerkat':
+      case 'generic':
         sendGenericMessage(senderID);
         break;
 
@@ -363,7 +310,9 @@ function receivedMessage(event) {
       default:
         sendTextMessage(senderID, messageText);
     }
-
+  } else if (messageAttachments) {
+    sendTextMessage(senderID, "Message with attachment received");
+  }
 }
 
 
@@ -634,10 +583,10 @@ function sendGenericMessage(recipientId) {
         payload: {
           template_type: "generic",
           elements: [{
-            title: "meerkat",
-            subtitle: "Wheres my meerkat",
-            item_url: "https://your-rewards.comparethemarket.com",
-            image_url: "https://your-rewards.comparethemarket.com/assets/toys/Batman.png ",
+            title: "rift",
+            subtitle: "Next-generation virtual reality",
+            item_url: "https://www.oculus.com/en-us/rift/",
+            image_url: SERVER_URL + "/assets/rift.png",
             buttons: [{
               type: "web_url",
               url: "https://www.oculus.com/en-us/rift/",
