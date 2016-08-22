@@ -254,7 +254,7 @@ function receivedMessage(event) {
 
  //var reply = "a really shitty reply";
     sendToLuis(senderID, messageText, function(reply) {
-      if(reply == "find_meerkat"){
+      if(reply == "where_meerkat"){
         reply = catme();
       }
       sendTextMessage(senderID, reply);
