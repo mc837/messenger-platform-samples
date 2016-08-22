@@ -1,6 +1,6 @@
 {
-    "appSecret": "",
-    "pageAccessToken": "",
-    "validationToken": "",
-    "serverURL": ""
+    "appSecret": "3fe20f7e2703ec4d4b1e9b975f97e218",
+    "pageAccessToken": "EAAPlj2SP8PQBABq0zJisav8fEN6pYPe9RDEZCelpboZAo7sIY494BDCeVxLan9pQwDgROSqKTOyBthoBXtKsHLtzoRRNovTV9gleeg99fxj12GJJ28bxAodNOdEd4ZBZAHiHvoe7nhwsKwJts5GBgGdT3cWA8GaxNfLneygPOwZDZD",
+    "validationToken": "hello",
+    "serverURL": "https://ctmbot.herokuapp.com/"
 }
