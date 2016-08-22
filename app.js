@@ -235,23 +235,22 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
   var quickReply = message.quick_reply;
 
-  if (isEcho) {
-    // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s",
-      messageId, appId, metadata);
-    return;
-  } else if (quickReply) {
-    var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
-
-    sendTextMessage(senderID, "Quick reply tapped");
-    return;
-  }
+  // if (isEcho) {
+  //   // Just logging message echoes to console
+  //   console.log("Received echo for message %s and app %d with metadata %s",
+  //     messageId, appId, metadata);
+  //   return;
+  // } else if (quickReply) {
+  //   var quickReplyPayload = quickReply.payload;
+  //   console.log("Quick reply for message %s with payload %s",
+  //     messageId, quickReplyPayload);
+  //
+  //   sendTextMessage(senderID, "Quick reply tapped");
+  //   return;
+  // }
 
   if (messageText) {
 
-if(messageText == "wheres my meerkat"){
  //var reply = "a really shitty reply";
     sendToLuis(senderID, messageText, function(reply) {
       var messageData = {
@@ -269,9 +268,7 @@ if(messageText == "wheres my meerkat"){
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     });
-  }else{
-    sendTextMessage(senderID, messageText);
-  }
+
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
@@ -297,12 +294,13 @@ if(messageText == "wheres my meerkat"){
       var entity = findHighestScoringEntity(stuff.entities).type;
 
       callback(intent + '_' + entity);
-    });
+
+  });
 }
 
 
 function findHighestScoringEntity(arr) {
-  var entity = {score: -1};
+  var entity = {type: 'none', score: -1};
 
   arr.forEach(function(i) {
     if (i.score > entity.score)
